@@ -7,7 +7,6 @@ class Item {
   price: number;
 
   constructor(purchase: string, price: number) {
-
     this.purchase = purchase;
     this.price = price;
     this.done = false;
@@ -23,13 +22,6 @@ export class AppComponent {
   text: string = "";
   price: number = 0;
   items: Item[] = [];
-  /*items: Item[] =
-      [
-        { purchase: "Хлеб", done: false, price: 15.9 },
-        { purchase: "Масло", done: false, price: 60 },
-        { purchase: "Картофель", done: true, price: 22.6 },
-        { purchase: "Сыр", done: false, price: 310 }
-      ];*/
 
   constructor(private http: HttpClient) {
     this.read();
@@ -39,16 +31,15 @@ export class AppComponent {
     if (text == null || text.trim() == "" || price == null)
       return;
 
-      console.log(`https://localhost:5001/Write/${price}/${text}/${false}/${price}`);
-      this.http.get<any>(`https://localhost:5001/Write/${price}/${text}/${false}/${price}`, {
+
+      this.http.get<any>(`https://localhost:5001/Write/1/${text}/false/${price}`, {
         headers: new HttpHeaders({
           'Access-Control-Allow-Origin': '*'
         })
+      }).subscribe(x =>{
+        console.log(x)
       });
-      console.log("ff");
       this.read();
-
-    //this.items.push(new Item(text, price));
   }
 
   read() {
@@ -56,8 +47,8 @@ export class AppComponent {
       headers: new HttpHeaders({
         'Access-Control-Allow-Origin': '*'
       })
-    }).subscribe(x => {
-      this.items = x as Item[];
+    }).subscribe(products => {
+      this.items = products as Item[];
     });
   }
 }

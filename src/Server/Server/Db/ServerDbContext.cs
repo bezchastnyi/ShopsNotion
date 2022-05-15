@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Server.Models;
 
-namespace Server
+namespace Server.Db
 {
     public class ServerDbContext : DbContext
     {

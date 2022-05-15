@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Server.Db;
+using Server.Models;
 
-namespace Server
+namespace Server.Controllers
 {
     [ApiController]
     public class OperationController : Controller
