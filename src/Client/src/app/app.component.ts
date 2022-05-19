@@ -24,25 +24,41 @@ export class AppComponent {
   items: Item[] = [];
 
   constructor(private http: HttpClient) {
-    this.read();
+    try {
+      this.read();
+    }
+    catch {
+      console.error('Failed to connect to server');
+    }
   }
 
   addItem(text: string, price: number): void {
     if (text == null || text.trim() == "" || price == null)
-      return;
+      console.error('text or price cannot be null');
 
-
-      this.http.get<any>(`https://localhost:5001/Write/1/${text}/false/${price}`, {
-        headers: new HttpHeaders({
-          'Access-Control-Allow-Origin': '*'
-        })
-      }).subscribe(x =>{
-        console.log(x)
-      });
+    try {
+      this.write(text, price);
       this.read();
+    }
+    catch {
+      console.error('Failed to connect to server');
+    }
   }
 
-  read() {
+  write(text: string, price: number): void {
+    if (text == null || text.trim() == "" || price == null)
+      console.error('text or price cannot be null');
+
+    this.http.get<any>(`https://localhost:5001/Write/1/${text}/false/${price}`, {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*'
+      })
+    }).subscribe(x => {
+      console.log(x)
+    });
+  }
+
+  read(): void {
     this.http.get<Item[]>('https://localhost:5001/Read', {
       headers: new HttpHeaders({
         'Access-Control-Allow-Origin': '*'
