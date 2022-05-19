@@ -49,7 +49,7 @@ export class AppComponent {
     if (text == null || text.trim() == "" || price == null)
       console.error('text or price cannot be null');
 
-    this.http.get<any>(`https://localhost:5001/Write/1/${text}/false/${price}`, {
+    this.http.get<any>(`https://localhost:5001/Write/${text}/false/${price}`, {
       headers: new HttpHeaders({
         'Access-Control-Allow-Origin': '*'
       })
