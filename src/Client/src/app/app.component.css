@@ -1,0 +1,12 @@
+#main {
+    position: relative;
+}
+
+h1 {
+    position: relative;
+}
+
+button {
+    position: absolute;
+    top: 100;
+}

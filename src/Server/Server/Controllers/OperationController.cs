@@ -15,7 +15,7 @@ namespace Server.Controllers
         {
             try
             {
-                return new JsonResult(new ServerDbContext().Product.ToList());
+                return new JsonResult(new ServerDbContext().Product.ToList().OrderBy(x => x.Id));
             }
             catch (Exception ex)
             {
@@ -36,6 +36,58 @@ namespace Server.Controllers
                     Price = price,
                     Purchase = purchase
                 });
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult($"Bad request: {ex.Message}");
+            }
+
+            return new JsonResult("OK");
+        }
+        
+        [HttpGet]
+        [Route("Edit/{id:int}/{purchase}/{done:bool}/{price:int}")]
+        public IActionResult Edit(int id, string purchase, bool done, int price)
+        {
+            try
+            {
+                var db = new ServerDbContext();
+
+                var product = db.Product.FirstOrDefault(x => x.Id == id);
+                if (product == null)
+                {
+                    return new JsonResult("Product not found");
+                }
+
+                product.Purchase = purchase;
+                product.Done = done;
+                product.Price = price;
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult($"Bad request: {ex.Message}");
+            }
+
+            return new JsonResult("OK");
+        }
+        
+        [HttpGet]
+        [Route("Delete/{id:int}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var db = new ServerDbContext();
+
+                var product = db.Product.FirstOrDefault(x => x.Id == id);
+                if (product == null)
+                {
+                    return new JsonResult("Product not found");
+                }
+
+                db.Product.Remove(product);
                 db.SaveChanges();
             }
             catch (Exception ex)

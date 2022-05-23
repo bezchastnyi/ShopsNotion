@@ -1,45 +1,53 @@
-<div class="page-header">
-    <h1> Список покупок ({{items.length}})</h1>
+<div id="main">
+    <h1>Список продуктов ({{items.length}})</h1>
+    <input type="button" value="Добавить" class="btn btn-primary" (click)="addItem()" />
 </div>
-<div class="panel">
-    <div class="form-inline">
-        <div class="form-group">
-            <div class="col-md-8">
-                <input class="form-control" [(ngModel)]="text" placeholder="Название" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-6">
-                <input type="number" class="form-control" [(ngModel)]="price" placeholder="Цена" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-8">
-                <button class="btn btn-default" (click)="addItem(text, price)">Добавить</button>
-            </div>
-        </div>
-    </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Предмет</th>
-                <th>Цена</th>
-                <th>Куплено</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of items">
-                <td>{{item.purchase}}</td>
-                <td>{{item.price}}</td>
-                <td><input type="checkbox" [(ngModel)]="item.done" /></td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th>Предмет</th>
-                <th>Цена</th>
-                <th>Куплено</th>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Продукт</td>
+            <td>Цена</td>
+            <td>Куплено</td>
+            <td>Статус операции:</td>
+            <td [ngClass]="status ? 'label label-success': 'label label-danger'">{{statusMessage}}</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of items">
+            <ng-template [ngTemplateOutlet]="loadTemplate(item)" [ngTemplateOutletContext]="{ $implicit: item }">
+            </ng-template>
+        </tr>
+    </tbody>
+</table>
+
+<ng-template #readOnlyTemplate let-item>
+    <td>{{item.purchase}}</td>
+    <td>{{item.price}}</td>
+    <td>
+        <input type="checkbox" [(ngModel)]="item.done" readonly disabled class="form-control" />
+    </td>
+    <td>
+        <input type="button" value="Изменить" class="btn btn-default" (click)="editItem(item)" />
+    </td>
+    <td>
+        <input type="button" value="Удалить" (click)="deleteItem(item)" class="btn btn-danger" />
+    </td>
+</ng-template>
+
+<ng-template #editTemplate>
+    <td>
+        <input type="text" [(ngModel)]="editedItem!.purchase" class="form-control" />
+    </td>
+    <td>
+        <input type="number" [(ngModel)]="editedItem!.price" class="form-control" />
+    </td>
+    <td>
+        <input type="checkbox" [(ngModel)]="editedItem!.done" class="form-control" />
+    </td>
+    <td>
+        <input type="button" value="Сохранить" (click)="saveItem()" class="btn btn-success" />
+    </td>
+    <td>
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </td>
+</ng-template>
