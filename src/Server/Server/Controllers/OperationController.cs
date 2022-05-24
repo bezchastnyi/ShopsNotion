@@ -15,7 +15,7 @@ namespace Server.Controllers
         {
             try
             {
-                return new JsonResult(new ServerDbContext().Product.ToList().OrderBy(x => x.Id));
+                return new JsonResult(new ServerDbContext().Product.ToList().OrderBy(x => x.Done));
             }
             catch (Exception ex)
             {

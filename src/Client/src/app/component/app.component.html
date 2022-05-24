@@ -8,7 +8,7 @@
             <td>Продукт</td>
             <td>Цена</td>
             <td>Куплено</td>
-            <td>Статус операции:</td>
+            <td></td>
             <td [ngClass]="status ? 'label label-success': 'label label-danger'">{{statusMessage}}</td>
         </tr>
     </thead>
@@ -24,7 +24,7 @@
     <td>{{item.purchase}}</td>
     <td>{{item.price}}</td>
     <td>
-        <input type="checkbox" [(ngModel)]="item.done" readonly disabled class="form-control" />
+        <input type="button" [value]="item.done ? '✅ Куплено': '❌ Не куплено'" class="btn btn-info" (click)="item.done=!item.done; saveCurrentItem(item)" />
     </td>
     <td>
         <input type="button" value="Изменить" class="btn btn-default" (click)="editItem(item)" />
@@ -42,7 +42,7 @@
         <input type="number" [(ngModel)]="editedItem!.price" class="form-control" />
     </td>
     <td>
-        <input type="checkbox" [(ngModel)]="editedItem!.done" class="form-control" />
+        <input type="checkbox" [(ngModel)]="editedItem!.done" readonly disabled class="form-control" />
     </td>
     <td>
         <input type="button" value="Сохранить" (click)="saveItem()" class="btn btn-success" />
